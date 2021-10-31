@@ -10,7 +10,6 @@ pragma solidity 0.8.9;
     @author Alex
     @notice Allows to estimate the values of goods during a crowdsale
     @dev We use an event
-
 */
 contract Crowdsale {
 
@@ -36,6 +35,11 @@ contract Crowdsale {
         escrow = _escrow;
     }*/
 
+    /**
+        @author Alex
+        @notice Initialises the state variables of the contract
+        @param _escrow who is the escrow here?
+    */
     //We must use the constructor instead a function
     constructor (address _escrow) public{
         owner = msg.sender;
@@ -43,11 +47,16 @@ contract Crowdsale {
         escrow = _escrow;
     }
 
+    /**
+        title deposit
+        @notice Saves Wei in balances associated with the address of msg.sender and in savedBalance
+        reexplain please?
+        @dev We use the emit of the event LogDepositReceived
+    */
     // function to receive ETH
     // NOT TO USE THIS (no secure) HERE & write the visibility
     //Write emit of event here
     //function() public {
-
     function deposit() payable external{
         //balances[msg.sender] = balances[msg.sender].add(msg.value);
         balances[msg.sender] = balances[msg.sender] + (msg.value); //value in wei
@@ -60,6 +69,11 @@ contract Crowdsale {
         emit LogDepositReceived(msg.sender);
     }
 
+    /**
+        title withdrawPayments
+        @notice Allow to get the money when you recover the good
+
+    */
     // refund investor
     function withdrawPayments() public{
         address payee = msg.sender;
