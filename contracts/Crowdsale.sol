@@ -16,6 +16,8 @@ contract Crowdsale {
     //Events
     event LogDepositReceived(address _dest);
 
+    event RefundInvestors(address _investor, uint256 _amountRefund, timestamp _dateRefund);
+
 
     //pb no need of that
     //using SafeMath for uint256;
@@ -23,7 +25,10 @@ contract Crowdsale {
     //Variables
     address public owner; // the owner of the contract
     address public escrow; // wallet to collect raised ETH
-    uint256 public savedBalance = 0; // Total amount raised in ETH
+    
+    //uint256 public totalDeposit = 0; // Total amount raised in ETH
+    uint256 public totalDeposit = 0; // Total amount raised in ETH
+    
     mapping (address => uint256) public balances; // Balances in incoming Ether
 
     // Initialization
@@ -49,7 +54,7 @@ contract Crowdsale {
 
     /**
         title deposit
-        @notice Saves Wei in balances associated with the address of msg.sender and in savedBalance
+        @notice Saves Wei in balances associated with the address of msg.sender and in totalDeposit
         reexplain please?
         @dev We use the emit of the event LogDepositReceived
     */
@@ -60,8 +65,8 @@ contract Crowdsale {
     function deposit() payable external{
         //balances[msg.sender] = balances[msg.sender].add(msg.value);
         balances[msg.sender] = balances[msg.sender] + (msg.value); //value in wei
-        //savedBalance = savedBalance.add(msg.value);
-        savedBalance = savedBalance + msg.value;
+        //totalDeposit = totalDeposit.add(msg.value);
+        totalDeposit = totalDeposit + msg.value;
 
         //payable(escrow).send(msg.value);
         payable(escrow).transfer(msg.value);
@@ -72,7 +77,6 @@ contract Crowdsale {
     /**
         title withdrawPayments
         @notice Allow to get the money when you recover the good
-
     */
     // refund investor
     function withdrawPayments() public{
@@ -95,11 +99,14 @@ contract Crowdsale {
         //payee must be payable to receive Ether
         payable(payee).transfer(payment);
 
-        //savedBalance = savedBalance.sub(payment);
-        //savedBalance = savedBalance(payment) - payment;
-        savedBalance = savedBalance - payment;
+        //totalDeposit = totalDeposit.sub(payment);
+        //totalDeposit = totalDeposit(payment) - payment;
+        totalDeposit = totalDeposit - payment;
 
         //pb to avoid re-entrency
         //balances[payee] = 0;
+
+
+        emit(payee,payment,now );
     }
 }
