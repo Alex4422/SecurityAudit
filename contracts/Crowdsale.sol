@@ -16,7 +16,7 @@ contract Crowdsale {
     //Events
     event LogDepositReceived(address _dest);
 
-    event RefundInvestors(address _investor, uint256 _amountRefund, timestamp _dateRefund);
+    event RefundInvestors(address _investor, uint256 _amountRefund, uint _dateRefund);
 
 
     //pb no need of that
@@ -107,6 +107,6 @@ contract Crowdsale {
         //balances[payee] = 0;
 
 
-        emit(payee,payment,now );
+        emit RefundInvestors(payee,payment,block.timestamp);
     }
 }
