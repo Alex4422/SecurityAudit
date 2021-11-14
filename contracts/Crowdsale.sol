@@ -50,9 +50,7 @@ contract Crowdsale {
         @dev We use the emit of the event LogDepositReceived. Do not use function() public & write the visibility.
              We have to declare the function payable to receive Ether
     */
-    //function deposit() payable external{
-
-    //more appropriate
+    //it is more appropriate to use receive Ether function here
     receive() payable external {
         //We use + instead of add
         balances[msg.sender] = balances[msg.sender] + (msg.value); //value in wei
